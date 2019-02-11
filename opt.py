@@ -49,20 +49,4 @@ def main():
     p.run()
 
 if __name__ == '__main__':
-    A = [[10, 10, 0], [0, 10, 10], [5, 10, 5], [2, 0, 0], [0, 2, 0], [0, 0, 2]]
-    np.random.seed(1)
-    R = np.random.randint(0, 50, (100, 3))
-    inputs = [{'store': store, 'req': req.tolist(), 'A': A} for store, req in enumerate(R)]
-
-    options = beam.options.pipeline_options.PipelineOptions()
-    gcloud_options = options.view_as(beam.options.pipeline_options.GoogleCloudOptions)
-    gcloud_options.job_name = "opt"
-    gcloud_options.project = "shibuya-dataflow"
-    gcloud_options.staging_location = "gs://shibuya-dataflow-dataflow/staging"
-    gcloud_options.temp_location = "gs://shibuya-dataflow-dataflow/temp"
-    options.view_as(beam.options.pipeline_options.StandardOptions).runner = "DataflowRunner"
-    p = beam.Pipeline(options=options)
-    (p | "Read" >> beam.Create(inputs)
-     | "Solve" >> beam.Map(solve)
-     | "Write" >> beam.io.WriteToText("results/simple/opt.txt"))#("gs://shibuya-dataflow-dataflow/results/simple.txt"))
-    p.run()
+    main()
