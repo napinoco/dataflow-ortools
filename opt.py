@@ -1,4 +1,3 @@
-from ortools.linear_solver import pywraplp
 import numpy as np
 import apache_beam as beam
 
@@ -36,6 +35,8 @@ def main():
     inputs = [{'store': store, 'req': req.tolist(), 'A': A} for store, req in enumerate(R)]
 
     options = beam.options.pipeline_options.PipelineOptions()
+    setup_options = options.view_as(beam.options.pipeline_options.SetupOptions)
+    setup_options.setup_file = './setup.py'
     gcloud_options = options.view_as(beam.options.pipeline_options.GoogleCloudOptions)
     gcloud_options.job_name = "opt"
     gcloud_options.project = "shibuya-dataflow"
